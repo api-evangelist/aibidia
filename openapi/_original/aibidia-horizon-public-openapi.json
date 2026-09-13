@@ -1,0 +1,14 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Public Horizon API",
+    "version": "public"
+  },
+  "servers": [
+    {
+      "url": "https://hzn-api.aibidia.com"
+    }
+  ],
+  "paths": { },
+  "components": { }
+}

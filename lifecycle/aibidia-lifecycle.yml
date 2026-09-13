@@ -1,0 +1,68 @@
+generated: '2026-09-13'
+method: searched
+source: >-
+  openapi/aibidia-otp-management-public-openapi.yml, https://www.aibidia.com/product-news,
+  https://aibidia.notion.site/public-external-release-notes (named as releaseNotesLink in
+  https://platform.aibidia.com/otpm/env.js), and probes of every aibidia.com host for a status page.
+versioning:
+  scheme: none-published
+  current_version: 'public'
+  note: >-
+    info.version on the OTP Management document is the literal string "public" — a document-flavour label
+    distinguishing the public swagger group from the internal ones, not a version a client can pin to. Paths
+    carry no version segment (/api/..., not /api/v1/...). The TP AI service declares version 0.1.0, the FastAPI
+    scaffold default. Data Studio's runtime config points at a /api/v1 base, so at least one internal service
+    does version its path, but that surface is not public.
+  breaking_change_policy: none-published
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  note: >-
+    No deprecation policy, no notice period, no RFC 8594 Sunset/Deprecation headers, and no operation in either
+    public spec carries `deprecated: true`. With only two public operations and no version segment, a breaking
+    change would reach integrators without warning.
+sla:
+  published: false
+  note: >-
+    No public SLA document. The Terms of Service is a general SaaS agreement; availability commitments, if any,
+    are contracted per customer.
+status_page:
+  published: false
+  probed:
+  - url: https://status.aibidia.com/
+    status: 0
+    result: NXDOMAIN
+  note: >-
+    No status page exists on any Aibidia host or on the common third-party hosts. platform-api.aibidia.com
+    answers a bare HTTP 200 "Healthy" at its root and tpai-api.aibidia.com answers {"status":"running"}, but
+    those are load-balancer health probes, not a customer-facing incident surface.
+changelog:
+  published: true
+  kind: product-news
+  urls:
+  - url: https://www.aibidia.com/product-news
+    status: 200
+    machine_readable: true
+    note: Marketing-side product announcements. Dated, indexed in the sitemap, human-readable HTML.
+  - url: https://aibidia.notion.site/public-external-release-notes
+    status: 200
+    machine_readable: false
+    note: >-
+      Aibidia's own release notes, named as `support.releaseNotesLink` in
+      https://platform.aibidia.com/otpm/env.js. Public (no login) but served as a Notion client-rendered page;
+      a crawler receives the Notion app shell and no release content.
+  api_changelog: false
+  note: >-
+    Neither surface is an API changelog. No entry documents a change to the Public OTP Management API contract,
+    and there is no per-version history for it anywhere Aibidia publishes.
+  see: changelog/aibidia-changelog.yml
+support:
+  url: https://aibidia.my.site.com/help/support
+  status: 200
+  email: support@aibidia.com
+  note: >-
+    Salesforce Experience Cloud help centre. Publicly reachable and its sitemap enumerates 246 articles, but the
+    site renders client-side (Lightning Web Runtime), so article bodies are not readable by a machine.

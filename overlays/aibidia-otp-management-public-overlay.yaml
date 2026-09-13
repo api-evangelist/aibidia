@@ -1,0 +1,49 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Aibidia Public OTP Management API
+  version: 1.0.0
+extends: ../openapi/aibidia-otp-management-public-openapi.yml
+x-generated: '2026-09-13'
+x-method: generated
+x-source: >-
+  Enhancements derived from the verbatim document Aibidia serves at
+  https://otpm-api.aibidia.com/swagger/public/swagger.json. The original is preserved unmodified at
+  openapi/_original/aibidia-otpm-public-openapi.json. Nothing here asserts behaviour the provider has not
+  published; the operationIds and the security requirement are the only additions, and the security requirement
+  restates the securityScheme the document already declares but never applies.
+actions:
+- target: $.info
+  description: Give the document a description and a contact, and record its provenance.
+  update:
+    description: >-
+      Aibidia's public integration surface for the OTP Management solution. Two operations: upload automated
+      multi-level segmentation data for a reporting period, and read the column mapping and upload status of the
+      Extract Type bound to the calling API key. Authentication is an X-DATAINGESTION-API-KEY request header.
+    contact:
+      name: Aibidia Support
+      email: support@aibidia.com
+      url: https://aibidia.my.site.com/help/support
+    x-apis-io-source: https://otpm-api.aibidia.com/swagger/public/swagger.json
+    x-apis-io-fetched: '2026-09-13'
+- target: $.paths['/api/datainjections/automated'].post
+  description: >-
+    Add a stable operationId. The served document declares none, which leaves every generated client, every
+    crosswalk and every agent skill without a name to bind to.
+  update:
+    operationId: injectAutomatedSegmentationData
+    security:
+    - X-DATAINGESTION-API-KEY: []
+    x-idempotent: false
+    x-reversible: false
+    x-rate-limit-recommended: 1/s
+- target: $.paths['/api/extract-types/integration'].get
+  description: Add a stable operationId and apply the declared security scheme.
+  update:
+    operationId: getExtractTypeIntegration
+    security:
+    - X-DATAINGESTION-API-KEY: []
+- target: $.servers
+  description: Name the production server explicitly.
+  update:
+  - url: https://otpm-api.aibidia.com
+    description: Production

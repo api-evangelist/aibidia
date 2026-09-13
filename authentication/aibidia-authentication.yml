@@ -1,0 +1,75 @@
+generated: '2026-09-13'
+method: searched
+source: >-
+  openapi/aibidia-otp-management-public-openapi.yml (served by Aibidia at
+  https://otpm-api.aibidia.com/swagger/public/swagger.json) plus Aibidia's own published platform runtime
+  configuration at https://platform.aibidia.com/env.js and https://platform.aibidia.com/tpai/env.js, and the
+  Azure AD B2C OpenID Provider Metadata saved at well-known/aibidia-openid-configuration.json.
+docs: https://otpm-api.aibidia.com/swagger/index.html
+summary:
+  types:
+  - apiKey
+  - oauth2
+  - openIdConnect
+  api_key_in:
+  - header
+  note: >-
+    Aibidia runs two distinct authentication regimes. Machine-to-machine integration with the public OTP
+    Management data-ingestion surface uses a per-Extract-Type API key in a request header. Every interactive
+    platform solution instead uses Azure AD B2C (custom domain auth.aibidia.com) through MSAL, exchanging an
+    OIDC authorization code for an access token scoped to a single resource scope.
+schemes:
+- name: X-DATAINGESTION-API-KEY
+  type: apiKey
+  in: header
+  parameter: X-DATAINGESTION-API-KEY
+  description: >-
+    API key authentication for the Public OTP Management API. The key is bound to a single Extract Type — the
+    GET /api/extract-types/integration operation returns "the configuration and current status of extracts for
+    the Extract Type associated with the provided API key" — so the credential itself carries the scope and no
+    identifier is passed in the request. Keys are provisioned by Aibidia to an existing customer; there is no
+    public self-serve issuance path.
+  applies_to:
+  - https://otpm-api.aibidia.com/api/datainjections/automated
+  - https://otpm-api.aibidia.com/api/extract-types/integration
+  sources:
+  - openapi/aibidia-otp-management-public-openapi.yml
+- name: Azure AD B2C (MSAL)
+  type: openIdConnect
+  flow: authorization_code
+  description: >-
+    Interactive sign-in for platform.aibidia.com and every solution module (TPDoc, CbCR, OTPM, STPM, VCA, Data
+    Studio, Horizon, TP AI). Microsoft Entra External ID / Azure AD B2C on Aibidia's own custom domain, driven by
+    MSAL in the browser. The TP Aurora product is a separate B2C tenant (tpauroraprod.b2clogin.com) rather than
+    part of the auth.aibidia.com estate.
+  openid_configuration: >-
+    https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/B2C_1A_SUSI/v2.0/.well-known/openid-configuration
+  issuer: https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/v2.0/
+  authorization_endpoint: https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/b2c_1a_susi/oauth2/v2.0/authorize
+  token_endpoint: https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/b2c_1a_susi/oauth2/v2.0/token
+  jwks_uri: https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/b2c_1a_susi/discovery/v2.0/keys
+  end_session_endpoint: https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/b2c_1a_susi/oauth2/v2.0/logout
+  policy: B2C_1A_SUSI
+  id_token_signing_alg: RS256
+  subject_types: pairwise
+  resource_scope: https://auth.aibidia.com/AibidiaAPI/user_impersonation
+  scopes_supported_in_discovery:
+  - openid
+  identity_providers:
+    note: >-
+      The platform ships a SHOW_IDENTITY_PROVIDER feature flag set true in production, and the B2C policy
+      advertises "idp" and "authenticationSource" claims, so federated enterprise identity providers are in
+      play. Which providers are federated is not published anonymously.
+  sources:
+  - https://platform.aibidia.com/env.js
+  - https://platform.aibidia.com/tpai/env.js
+  - well-known/aibidia-openid-configuration.json
+gaps:
+- >-
+  No published authentication reference page. The Public OTP Management API's only documentation is the Swagger
+  UI it serves itself; how an integrator obtains an X-DATAINGESTION-API-KEY is not stated anywhere anonymously
+  reachable.
+- >-
+  The B2C discovery document advertises scopes_supported as ["openid"] only, while the platform actually requests
+  https://auth.aibidia.com/AibidiaAPI/user_impersonation. A client reading discovery alone cannot learn the
+  resource scope it needs.

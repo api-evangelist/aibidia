@@ -64,5 +64,30 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aibidia is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
+Aibidia is a Helsinki-based transfer pricing technology company. Its cloud platform lets multinational
+enterprises manage transfer pricing policy, intercompany transaction data, documentation and country-by-country
+reporting across a set of solution modules — TPDoc, CbCR, OTP Management, Strategic TP Management, Value Chain
+Analysis, Data Studio, Horizon and TP AI — behind a single Azure AD B2C sign-in at platform.aibidia.com.
+
+**What this profile found (enrichment pass 2026-09-13).** Aibidia publishes no developer portal and no API
+reference, and its marketing site's full 149-URL sitemap contains nothing developer-facing. The machine-readable
+contracts were recovered from the provider's own published platform runtime configuration
+(`https://platform.aibidia.com/env.js` and the per-solution `env.js` files), which names every backend service
+host:
+
+- **Public OTP Management API** — `https://otpm-api.aibidia.com/swagger/public/swagger.json`, OpenAPI 3.1.1, a
+  deliberately-public two-operation ERP data-ingestion surface authenticated with an `X-DATAINGESTION-API-KEY`
+  header. This is a real integration API, not a leak: the Swagger UI declares exactly one document group and
+  names it "Public".
+- **Aibidia TP AI API** — `https://tpai-api.aibidia.com/openapi.json`, OpenAPI 3.1.0, the session service behind
+  the TP AI solution.
+- A third published document, the **Public Horizon API** at `https://hzn-api.aibidia.com/swagger/public/swagger.json`,
+  is real but declares zero operations. It is saved under `openapi/_original/` as evidence and deliberately not
+  registered as an API.
+
+No MCP server, no A2A agent card, no client SDKs in any registry, no public pricing, and no status page. Aibidia
+does publish an `llms.txt`, an OpenID Provider Metadata document on its own `auth.aibidia.com` custom domain, and
+ISO 27001 / SOC 2 Type 2 claims on its site. Every probe and its HTTP status is recorded in the artifacts.
+
+- https://www.aibidia.com/
 - https://equityzen.com/company/aibidia

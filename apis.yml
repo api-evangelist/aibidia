@@ -1,23 +1,175 @@
 aid: aibidia
 name: Aibidia
-description: 'Aibidia is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Aibidia is a Helsinki-based transfer pricing technology company whose cloud platform lets multinational
+  enterprises manage transfer pricing policy, intercompany transaction data, documentation and country-by-country
+  reporting in one place. The platform is delivered as a set of solution modules — TPDoc (documentation), CbCR,
+  OTP Management, Strategic TP Management, Value Chain Analysis, Data Studio, Horizon and TP AI — behind a single
+  Azure AD B2C sign-in at platform.aibidia.com, each backed by its own first-party API service on an aibidia.com
+  subdomain. Aibidia publishes a small deliberately-public integration surface: the Public OTP Management API,
+  which accepts automated multi-level segmentation data injections from a customer's ERP or finance stack using an
+  X-DATAINGESTION-API-KEY header. There is no open developer portal, no public API reference and no self-serve
+  signup; the platform is sold to enterprise tax teams and the help centre and release notes sit behind
+  client-rendered portals.
 url: https://raw.githubusercontent.com/api-evangelist/aibidia/refs/heads/main/apis.yml
+image: https://cdn.prod.website-files.com/652d101c1d03208622e683de/65686f3212a45fa956dd35a9_Social%20Share%20Aibidia.png
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: 'enrichment pass 2026-09-13: two first-party OpenAPI documents recovered from the provider''s own hosts'
 specificationVersion: '0.20'
 created: '2026-09-13'
 modified: '2026-09-13'
+position: Producing
 tags:
 - Company
-apis: []
+- Transfer Pricing
+- Tax Technology
+- Tax Compliance
+- Regulatory Reporting
+- Country-by-Country Reporting
+- Financial Data
+- Enterprise Software
+- Data Ingestion
+- Finland
+tags_raw:
+- company
+- transfer-pricing
+- tax-technology
+- tax-compliance
+- regulatory-reporting
+- country-by-country-reporting
+- financial-data
+- enterprise-software
+- data-ingestion
+- finland
+apis:
+- name: Aibidia Public OTP Management API
+  image: https://cdn.prod.website-files.com/652d101c1d03208622e683de/65686f3212a45fa956dd35a9_Social%20Share%20Aibidia.png
+  description: >-
+    The deliberately-public integration surface of Aibidia's OTP Management solution. It accepts automated
+    multi-level segmentation data injections for a given year, month and Extract Type, and returns the
+    configuration and current upload status of the extracts bound to the calling API key. Authentication is an
+    X-DATAINGESTION-API-KEY request header issued per Extract Type; errors are returned as RFC 7807
+    ProblemDetails. The published document is served by the provider at
+    https://otpm-api.aibidia.com/swagger/public/swagger.json and is titled "Public OTP Management API".
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
+  tags:
+  - Transfer Pricing
+  - Data Ingestion
+  - Tax Technology
+  - Financial Data
+  tags_raw:
+  - transfer-pricing
+  - data-ingestion
+  - tax-technology
+  - financial-data
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-otp-management-public-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: Overlay
+    url: overlays/aibidia-otp-management-public-overlay.yaml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+- name: Aibidia TP AI API
+  image: https://cdn.prod.website-files.com/652d101c1d03208622e683de/65686f3212a45fa956dd35a9_Social%20Share%20Aibidia.png
+  description: >-
+    Backend service for the Aibidia TP AI solution surfaced at platform.aibidia.com/tpai/. It serves an OpenAPI
+    3.1.0 document anonymously at https://tpai-api.aibidia.com/openapi.json describing a healthcheck, an
+    authorization call and a chat-session creation call that takes a workspaceId and returns a hosted assistant
+    session. The served document carries the FastAPI framework's default info.title; the service is identified as
+    Aibidia's TP AI API by the provider's own published runtime configuration at
+    https://platform.aibidia.com/tpai/env.js.
+  humanURL: https://www.aibidia.com/platform
+  baseURL: https://tpai-api.aibidia.com
+  tags:
+  - Transfer Pricing
+  - Artificial Intelligence
+  - Tax Technology
+  tags_raw:
+  - transfer-pricing
+  - artificial-intelligence
+  - tax-technology
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-tp-ai-openapi.yml
+  - type: Overlay
+    url: overlays/aibidia-tp-ai-overlay.yaml
+common:
+- type: Website
+  url: https://www.aibidia.com/
+- type: Documentation
+  url: https://aibidia.my.site.com/help/support
+- type: Support
+  url: https://aibidia.my.site.com/help/support
+- type: HelpCenter
+  url: https://aibidia.my.site.com/help/support
+- type: APIReference
+  url: https://otpm-api.aibidia.com/swagger/index.html
+- type: Login
+  url: https://platform.aibidia.com/
+- type: Blog
+  url: https://www.aibidia.com/blog
+- type: GitHubOrganization
+  url: https://github.com/Aibidia
+- type: TermsOfService
+  url: https://www.aibidia.com/terms-of-service
+- type: PrivacyPolicy
+  url: https://www.aibidia.com/privacy-policy
+- type: LLMsTxt
+  url: llms/aibidia-llms.txt
+- type: WellKnown
+  url: well-known/aibidia-well-known.yml
+- type: Authentication
+  url: authentication/aibidia-authentication.yml
+- type: Conventions
+  url: conventions/aibidia-conventions.yml
+- type: Lifecycle
+  url: lifecycle/aibidia-lifecycle.yml
+- type: Conformance
+  url: conformance/aibidia-conformance.yml
+- type: Compliance
+  url: conformance/aibidia-conformance.yml
+- type: DomainSecurity
+  url: security/aibidia-domain-security.yml
+- type: ErrorCatalog
+  url: errors/aibidia-problem-types.yml
+- type: DataModel
+  url: data-model/aibidia-data-model.yml
+- type: RateLimits
+  url: rate-limits/aibidia-rate-limits.yml
+- type: Plans
+  url: plans/aibidia-plans-pricing.yml
+- type: Packages
+  url: packages/aibidia-packages.yml
+- type: ChangeLog
+  url: changelog/aibidia-changelog.yml
+- type: ChangeLog
+  url: https://www.aibidia.com/product-news
+- type: MCPServer
+  url: mcp/aibidia-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
-common:
-- type: Website
-  url: https://equityzen.com/company/aibidia
+x-enrichment:
+  date: '2026-09-13'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v3

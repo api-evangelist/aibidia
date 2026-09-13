@@ -1,0 +1,26 @@
+generated: '2026-09-13'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.aibidia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 27 22:06:32 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: otpm-api.aibidia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 25 05:33:34 2026 GMT
+  hsts: null
+- host: tpai-api.aibidia.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 25 05:33:34 2026 GMT
+  hsts: null
+domains:
+- domain: aibidia.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: false

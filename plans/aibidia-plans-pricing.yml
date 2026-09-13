@@ -1,0 +1,34 @@
+generated: '2026-09-13'
+method: searched
+source: https://www.aibidia.com/ (sitemap.xml enumerated in full, 149 URLs, no pricing page) and https://www.aibidia.com/book-a-demo
+plan_count: 0
+pricing_model: enterprise-quote
+note: >-
+  Aibidia publishes no plans, no tiers and no prices. Its complete sitemap (149 URLs, fetched 2026-09-13) contains
+  no /pricing page; https://www.aibidia.com/pricing returns 404. Every commercial path on the site is a
+  sales-qualification form — "Book a demo", "Talk to a TP expert", "Contact sales". The one product with a
+  self-serve-looking entry point, TP Aurora, routes through /tp-aurora-trial and /contact-sales-tp-aurora, both
+  of which are forms rather than a checkout, and TP Aurora signs in against a separate Azure AD B2C tenant
+  (tpauroraprod.b2clogin.com) from the main platform. There is also a `pricing` article in the customer help
+  centre (https://aibidia.my.site.com/help/article/pricing) but that portal renders client-side and serves no
+  readable content to a crawler, so whatever it says is not publicly readable.
+  This is an honest zero, not a gap in our search: enterprise transfer pricing software sold to multinational
+  tax departments is priced by quote, and Aibidia has made no attempt to publish otherwise.
+plans: []
+quota_signals:
+  note: >-
+    The only published quantitative limits are technical caps on the ingestion API (5000 rows/page, 2000
+    pages/submission, 1 request/second recommended) and they are not tied to a commercial tier. See
+    rate-limits/aibidia-rate-limits.yml.
+evidence:
+- url: https://www.aibidia.com/pricing
+  status: 404
+- url: https://www.aibidia.com/sitemap.xml
+  status: 200
+- url: https://www.aibidia.com/book-a-demo
+  status: 200
+- url: https://www.aibidia.com/tp-aurora-trial
+  status: 200
+- url: https://aibidia.my.site.com/help/article/pricing
+  status: 200
+  note: 200 but client-rendered (Salesforce LWR); body carries no readable pricing text.

@@ -1,0 +1,172 @@
+generated: '2026-09-13'
+method: probed
+source: >-
+  Anonymous HTTP probes of /.well-known/ paths on every host this record knows — the registrable domain and www,
+  the platform SPA host, every API host named in Aibidia's own published runtime configuration
+  (https://platform.aibidia.com/env.js and the per-solution env.js files), and the Azure AD B2C authorization
+  host those files name in MSAL_AUTHORITY.
+note: >-
+  Aibidia serves no document at any conventional /.well-known/ path on any host: 64 probes across 8 hosts all
+  returned 404. It does serve a real OpenID Provider Metadata document, but at the Azure AD B2C policy-scoped
+  path rather than the host root — /087223a3-c05b-420d-b854-db9b237f5a71/B2C_1A_SUSI/v2.0/.well-known/openid-configuration
+  on auth.aibidia.com — which is where Microsoft's B2C custom-domain product places it. That document is the
+  only real hit and is saved verbatim here.
+hosts:
+- host: auth.aibidia.com
+  documents:
+  - path: /087223a3-c05b-420d-b854-db9b237f5a71/B2C_1A_SUSI/v2.0/.well-known/openid-configuration
+    status: 200
+    file: aibidia-openid-configuration.json
+    note: >-
+      Azure AD B2C OpenID Provider Metadata for the B2C_1A_SUSI (sign-up/sign-in) custom policy on Aibidia's own
+      auth.aibidia.com custom domain. Issuer https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/v2.0/,
+      RS256 id_tokens, pairwise subjects, authorization-code and implicit response types, scopes_supported
+      declares only "openid" (the resource scope the platform actually requests,
+      https://auth.aibidia.com/AibidiaAPI/user_impersonation, is not advertised in discovery).
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: platform.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: platform-api.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: otpm-api.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: hzn-api.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: tpai-api.aibidia.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+a2a_agent_card:
+  found: false
+  note: >-
+    No A2A Agent Card on any host. /.well-known/agent-card.json and the legacy /.well-known/agent.json both
+    returned a clean 404 (not an SPA catch-all 200) on all 8 hosts probed. No a2a/ artifact was written.

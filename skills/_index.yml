@@ -1,0 +1,24 @@
+generated: '2026-09-13'
+method: generated
+source: >-
+  Grounded in openapi/aibidia-otp-management-public-openapi.yml, fetched verbatim from
+  https://otpm-api.aibidia.com/swagger/public/swagger.json. No skill was authored for the Aibidia TP AI API:
+  its create-session operation is gated behind the interactive Azure AD B2C platform session and there is no
+  published way for an agent to obtain one.
+skills:
+- name: aibidia-load-segmentation-period
+  file: aibidia-load-segmentation-period.md
+  api: Aibidia Public OTP Management API
+  description: >-
+    Upload one reporting period of multi-level segmentation data from an ERP extract into Aibidia OTP
+    Management, and confirm it landed.
+  operations:
+  - POST /api/datainjections/automated
+  - GET /api/extract-types/integration
+  agent_safety: supervised
+  agent_safety_note: >-
+    The write operation is non-idempotent, non-reversible and order-dependent, with no dry-run. An agent running
+    it unsupervised can duplicate or corrupt a reporting period with no published way to undo it.
+note: >-
+  One skill, because Aibidia publishes two operations. This is the whole of its anonymous integration surface —
+  not a selection from a larger catalogue.

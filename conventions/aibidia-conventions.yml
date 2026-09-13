@@ -1,0 +1,127 @@
+generated: '2026-09-13'
+method: derived
+source: >-
+  openapi/aibidia-otp-management-public-openapi.yml and openapi/aibidia-tp-ai-openapi.yml, both fetched from
+  Aibidia's own hosts; enriched from the operation descriptions the provider wrote into the OTP Management
+  document and from https://platform.aibidia.com/env.js.
+scope: >-
+  The only integration surface Aibidia publishes anonymously is the Public OTP Management API (2 operations) plus
+  the TP AI session service (4 operations). These conventions describe that surface. The internal per-solution
+  APIs behind Azure AD B2C are not documented publicly and are deliberately not characterised here.
+auth_style:
+  public_integration: API key in the X-DATAINGESTION-API-KEY request header, scoped to one Extract Type.
+  interactive: OAuth 2.0 authorization code via Azure AD B2C (MSAL), bearer access token.
+  see: authentication/aibidia-authentication.yml
+idempotency:
+  coverage: none
+  scope: []
+  mechanism: null
+  note: >-
+    No replay protection is documented or declared. POST /api/datainjections/automated is the only write
+    operation on the public surface and it accepts no idempotency key, no client-supplied request id, and no
+    conditional header. The provider's own failure-recovery instruction is the opposite of idempotent: "If a
+    request fails, restart from currentPage: 0", which tells an integrator to re-send the entire upload. An
+    agent retrying a page after an ambiguous timeout has no published way to tell whether the first attempt
+    landed.
+  evidence: >-
+    openapi/aibidia-otp-management-public-openapi.yml -> paths./api/datainjections/automated.post.description
+reversibility:
+  grade: none
+  write_surfaces:
+  - operation: POST /api/datainjections/automated
+    operationId: null
+    reversal_operation: null
+    window: null
+    note: >-
+      No cancel, delete, void, rollback or replace operation exists on the public surface. The data injection
+      creates an Extract (the 200 response returns an extractId) and there is no published operation that
+      retracts one. GET /api/extract-types/integration can report an extract's uploadState (Created, Initiated,
+      Completed, Failed) and validationStatus, so an integrator can observe the outcome, but cannot undo it.
+      Correcting a bad upload appears to require re-uploading the period from currentPage 0 — an overwrite, not
+      a documented reversal, and the docs do not say that it is one.
+  note: >-
+    Graded `none` rather than `na`: this API has a real write surface, it just publishes no reversal path and no
+    window. NEVER inferred a window here — the provider states none.
+dry_run_mode:
+  supported: false
+  note: >-
+    No test mode, no validate-only flag, no sandbox host. The spec exposes a validationStatus on an extract
+    (Created / Pending / Processing / Completed / Failed) but validation runs after the data has been accepted,
+    not instead of accepting it.
+pagination:
+  style: client-driven-sequential-upload
+  note: >-
+    Pagination on this API is a property of the WRITE, not of a read. The request body carries `pages` (total,
+    1-2000), `currentPage` (the index of this page) and `data` (max 5000 items). The provider requires pages to
+    be sent "in consecutive order" and to restart from currentPage 0 on any failure. There is no cursor, no
+    limit/offset read pagination, and no Link header — neither of the two public operations returns a collection
+    that needs paging.
+  params:
+  - pages
+  - currentPage
+  max_items_per_page: 5000
+  max_pages: 2000
+  max_rows_per_submission: 10000000
+versioning:
+  style: path-prefix
+  note: >-
+    Operations sit under /api/ with no version segment. The OpenAPI document declares info.version as the literal
+    string "public" — a document-flavour label, not a semantic version — so there is no version number a client
+    can pin to and no published policy for how breaking changes are introduced. See lifecycle/.
+error_envelope:
+  format: rfc7807
+  media_types:
+  - application/problem+json (not declared; the spec serves ProblemDetails under application/json, text/json and text/plain)
+  schema: ProblemDetails
+  fields:
+  - type
+  - title
+  - status
+  - detail
+  - instance
+  note: >-
+    Standard ASP.NET Core ProblemDetails (RFC 7807). Every field is nullable and `additionalProperties` is open,
+    so extension members may appear. The spec does NOT use the application/problem+json media type, which means
+    a client cannot content-negotiate for the problem shape. See errors/aibidia-problem-types.yml.
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: null
+  note: >-
+    No rate-limit response headers are declared and no 429 response is documented on either operation. The only
+    rate guidance is prose in the operation description: "Rate Limit: Recommended 1 request per second." That is
+    a client-side recommendation with no published server-side signal, so an agent has nothing to back off
+    against. See rate-limits/aibidia-rate-limits.yml.
+request_tracing:
+  header: null
+  note: No request-id or correlation-id header is documented. ProblemDetails.instance is the only per-request identifier.
+metadata: 
+  supported: false
+  note: No customer-defined metadata/tags field on any public object.
+field_expansion:
+  supported: false
+content_types:
+  request:
+  - application/json
+  - text/json
+  - application/*+json
+  response:
+  - application/json
+  - text/json
+  - text/plain
+  note: >-
+    text/plain is declared as a response media type for JSON bodies throughout — an ASP.NET Core default that
+    was not trimmed. A client must not rely on the Content-Type header alone to decide how to parse.
+events:
+  asyncapi: false
+  webhooks: false
+  note: >-
+    Aibidia does operate a real push/messaging surface — every solution's runtime config names a SignalR hub at
+    https://broker.aibidia.com/hub, and TPDoc additionally names https://tpdoc-api.aibidia.com/hub — but it is
+    an in-app notification channel for the authenticated SPA, not a publicly documented webhook or event
+    contract. No AsyncAPI document and no webhook catalog is published, so no asyncapi/ artifact was written.
+cross_links:
+- errors/aibidia-problem-types.yml
+- lifecycle/aibidia-lifecycle.yml
+- authentication/aibidia-authentication.yml
+- rate-limits/aibidia-rate-limits.yml
+- data-model/aibidia-data-model.yml

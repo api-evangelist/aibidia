@@ -1,0 +1,156 @@
+generated: '2026-09-13'
+method: searched
+source: >-
+  openapi/aibidia-otp-management-public-openapi.yml and openapi/aibidia-tp-ai-openapi.yml (both fetched from
+  Aibidia hosts), well-known/aibidia-openid-configuration.json, https://www.aibidia.com/why-aibidia,
+  https://www.aibidia.com/terms-of-service and the certification badge served in the footer of every
+  www.aibidia.com page.
+conformance:
+- id: openapi-3.1
+  conforms: true
+  evidence: >-
+    https://otpm-api.aibidia.com/swagger/public/swagger.json declares openapi 3.1.1 with a servers[] block on
+    Aibidia's own host; https://tpai-api.aibidia.com/openapi.json declares openapi 3.1.0. Both parse.
+- id: rfc7807
+  conforms: true
+  evidence: >-
+    The OTP Management API declares a ProblemDetails schema with type/title/status/detail/instance and references
+    it from every documented 4xx on both operations. Partial: it is served under application/json rather than
+    application/problem+json, so the shape conforms while the media type does not.
+  note: partial — correct shape, wrong media type
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    No application/problem+json media type and no `errors` extension member; the envelope is the pre-9457
+    ASP.NET Core ProblemDetails.
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Azure AD B2C authorization-code flow. Token endpoint
+    https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/b2c_1a_susi/oauth2/v2.0/token, client
+    authentication methods client_secret_post and client_secret_basic, per
+    well-known/aibidia-openid-configuration.json.
+- id: oidc
+  conforms: true
+  evidence: >-
+    A real OpenID Provider Metadata document is served at
+    https://auth.aibidia.com/087223a3-c05b-420d-b854-db9b237f5a71/B2C_1A_SUSI/v2.0/.well-known/openid-configuration
+    (HTTP 200) with issuer, jwks_uri, RS256 id_token signing and a standard claims_supported set. Not served at
+    the host-root well-known path — it is policy-scoped, per Azure AD B2C custom-domain convention.
+- id: pagination
+  conforms: false
+  evidence: >-
+    No read pagination exists — neither public operation returns a collection. The `pages`/`currentPage` fields
+    are write-side upload chunking, not a pagination contract.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No idempotency key, no client request id, no conditional headers on the single write operation. The
+    provider's published failure recovery is "restart from currentPage: 0". See conventions/.
+- id: iso-27001
+  conforms: true
+  evidence: >-
+    "we are ISO27001 and SOC2 Type 2 certified" — https://www.aibidia.com/why-aibidia. A KPMG "Information
+    Security Management Certified" badge is served in the footer of every www.aibidia.com page
+    (cdn.prod.website-files.com/.../KPMG Cetification logo.avif). Self-asserted on the vendor's own marketing
+    site; no certificate number, scope statement, audit period or downloadable report is published, and Aibidia
+    operates no trust centre portal.
+  verification: vendor-asserted
+- id: soc2-type2
+  conforms: true
+  evidence: '"we are ISO27001 and SOC2 Type 2 certified" — https://www.aibidia.com/why-aibidia.'
+  verification: vendor-asserted
+  note: >-
+    No SOC 2 report, bridge letter, or request path is published. A buyer must go through sales to see the
+    attestation.
+- id: gdpr
+  conforms: true
+  evidence: >-
+    https://www.aibidia.com/terms-of-service and https://www.aibidia.com/privacy-policy both name Regulation
+    (EU) 2016/679 explicitly and identify supplementary Finnish legislation and supervisory-authority guidance as
+    governing. The ToS states customer personal data is stored on Microsoft Azure.
+- id: fhir
+  conforms: false
+- id: fapi
+  conforms: false
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM schema URN and no /scim endpoint, despite an enterprise multi-tenant product with federated identity
+    (the platform ships a SHOW_IDENTITY_PROVIDER flag and the B2C policy emits idp/roles claims). User
+    provisioning is not exposed as an API.
+- id: odata
+  conforms: false
+- id: json-api
+  conforms: false
+domain_standard:
+  applicable_standards_considered:
+  - OECD BEPS Action 13 Country-by-Country Report XML Schema
+  - OECD Transfer Pricing Guidelines (master file / local file structure)
+  - SAF-T (OECD Standard Audit File for Tax)
+  - XBRL / Inline XBRL
+  - ISO 20022
+  declared: false
+  conforms: false
+  evidence: >-
+    Checked the served contract itself, not marketing prose. The OTP Management schemas carry no namespace, no
+    schema URN, no message-type identifier and no reference to any published tax or accounting standard. The
+    48-value ExtractTypeColumn enum is Aibidia's own vocabulary — SAP-shaped in places (SoldToParty,
+    BillingDocument, Incoterms, MaterialCode) and OECD-concept-shaped in others (TaxJurisdiction,
+    TransferPriceMethod, markup) — but it is bilateral, not a standard. Aibidia's CbCR module demonstrably
+    produces OECD CbC XML output for filing (the help centre carries a "Step 8: validate and convert your CbC
+    data" article and CbC Table 1/Table 2 definition articles), but that conversion happens inside the product;
+    no public contract declares it, so this is recorded as not-declared rather than as conformance.
+  note: >-
+    REWARD-ONLY check. Transfer pricing has a genuine cross-vendor standard available in the OECD CbCR XML
+    schema, and a contract that declared it would let a customer's existing tax-reporting toolchain integrate
+    without a bespoke connector. Aibidia does not declare it on the public surface. Nothing is invented here.
+regulatory_regime:
+  applicable: null
+  note: >-
+    The Kin Score's industry_regulatory map carries no tax / transfer pricing regime, so no conditional
+    regulatory facet applies to this provider. The regimes that actually govern its customers — OECD BEPS
+    Actions 8-10 and 13, EU DAC6/DAC7, Pillar Two GloBE, and each jurisdiction's local file rules — are the
+    subject matter of the product, not a compliance obligation on its API.
+additional_contracts_discovered:
+  note: >-
+    Recorded here so the probe result is not lost. Contract discovery walked every API host named in Aibidia's
+    own published runtime configuration, not just the docs host, and found three more swagger surfaces beyond the
+    two registered in apis.yml.
+  surfaces:
+  - host: hzn-api.aibidia.com
+    url: https://hzn-api.aibidia.com/swagger/public/swagger.json
+    status: 200
+    result: >-
+      A real published OpenAPI 3.1.1 document titled "Public Horizon API" with a servers[] block naming
+      https://hzn-api.aibidia.com — and ZERO paths. The Swagger UI at /swagger/index.html renders an empty API.
+      Saved verbatim at openapi/_original/aibidia-horizon-public-openapi.json as evidence, but deliberately NOT
+      registered as an API in apis.yml and not refined: a contract that declares no operations describes no API,
+      and pointing at it would credit Aibidia with a surface that does not exist. The most likely reading is a
+      public swagger document group stood up ahead of the operations that will fill it.
+  - host: datastudio-api.aibidia.com
+    url: https://datastudio-api.aibidia.com/swagger/v1/swagger.json
+    status: 401
+    result: >-
+      Swagger exists and is authentication-gated. Every swagger path on this host returns 401 rather than 404,
+      which distinguishes "gated" from "absent". Not saved — a gated spec must not be guessed at.
+  - host: otpm-api.aibidia.com
+    url: https://otpm-api.aibidia.com/swagger/index.html
+    status: 200
+    result: >-
+      Swagger UI whose config declares exactly one document group, named "Public OTP Management API". The
+      internal groups are not exposed. This is a deliberate public/internal split, not an accidental leak.
+  hosts_probed_without_a_contract:
+  - platform-api.aibidia.com (root answers 200 "Healthy"; all swagger and openapi paths 404)
+  - tpdoc-api.aibidia.com, cbc-api.aibidia.com, vca-api.aibidia.com, stpm-api.aibidia.com, wfm-api.aibidia.com (404)
+  - analyticshub.aibidia.com, broker.aibidia.com (404); analytics2.aibidia.com (Cloudflare 530, origin unreachable)
+  - axe.aibidia.com (Azure Functions default page)
+  - tm-api.aibidia.com (named in TPDoc runtime config but NXDOMAIN — a stale entry in the provider's own config)
+  graphql:
+    found: false
+    note: POST /graphql on platform-api.aibidia.com returns 404. No GraphQL surface anywhere on the estate.
+  grpc_wsdl:
+    found: false
+    note: >-
+      No .proto published (the GitHub org has zero public repositories) and no ?wsdl / ?singleWsdl surface on any
+      API host. The estate is ASP.NET Core REST plus SignalR, not SOAP or gRPC.

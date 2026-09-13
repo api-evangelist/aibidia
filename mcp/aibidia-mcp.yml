@@ -1,0 +1,45 @@
+generated: '2026-09-13'
+method: derived
+source: >-
+  Derived from openapi/aibidia-otp-management-public-openapi.yml after probing for a real server found none.
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: probed
+note: >-
+  Aibidia ships no MCP server. Probed POST tools/list against https://tpai-api.aibidia.com/mcp,
+  https://tpai-api.aibidia.com/api/mcp, https://platform-api.aibidia.com/mcp and
+  https://otpm-api.aibidia.com/mcp — all 404 — and mcp.aibidia.com does not resolve. No npm or PyPI package
+  exists (see packages/), no MCP server appears in any public registry, and nothing in Aibidia's own published
+  runtime configuration names an MCP endpoint. The tools below are a DERIVED candidate mapping of the two
+  operations Aibidia publishes; no endpoint is asserted because none exists. Do not read `endpoint: null` as a
+  gap in our probing — it is the finding.
+  Aibidia does ship an AI surface (the TP AI solution at platform.aibidia.com/tpai/, backed by
+  tpai-api.aibidia.com, which brokers hosted assistant sessions and carries named workflows such as "OECD
+  Guidelines"), but it is a first-party in-product assistant reached through the browser, not an agent-callable
+  protocol endpoint.
+tools:
+- name: inject_segmentation_data
+  description: >-
+    Upload one page of multi-level segmentation data for a given reporting year and month to the Extract Type
+    bound to the calling API key.
+  rest:
+  - POST /api/datainjections/automated
+  input_schema_source: InputAutomatedMultiLevelSegmentationInjectionDto
+  destructive: true
+  caveat: >-
+    Not agent-safe as published. No idempotency key, no dry-run, and no reversal operation; pages must be sent
+    consecutively and any failure requires restarting the whole submission from currentPage 0. An agent should
+    not be given this tool without an external replay guard.
+- name: get_extract_type_integration
+  description: >-
+    Retrieve the column mappings and the current upload/validation status of every extract for the Extract Type
+    bound to the calling API key.
+  rest:
+  - GET /api/extract-types/integration
+  input_schema_source: none (no parameters — the API key carries the scope)
+  destructive: false

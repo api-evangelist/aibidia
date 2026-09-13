@@ -1,0 +1,37 @@
+generated: '2026-09-13'
+method: searched
+source: https://www.aibidia.com/product-news and https://www.aibidia.com/sitemap.xml (fetched 2026-09-13)
+scheme: undated-product-announcements
+current_version: null
+api_changelog: false
+note: >-
+  Aibidia publishes product news, not an API changelog. The entries below are the product-news posts listed in
+  its sitemap; none of them documents a change to a published API contract, and none carries a version number.
+  The release notes Aibidia points its own OTPM users at (https://aibidia.notion.site/public-external-release-notes,
+  named as support.releaseNotesLink in https://platform.aibidia.com/otpm/env.js) are public but Notion-rendered,
+  so their dated content is not machine-readable. Dates are not recorded below because the sitemap exposes
+  lastmod for the page, not a publication date for the release, and asserting one would be a guess.
+entries:
+- title: Introducing Connected Transfer Pricing
+  url: https://www.aibidia.com/product-news/introducing-connected-transfer-pricing
+  breaking: unknown
+  api_affecting: false
+- title: 'Multi-level Profit Monitoring: a new way to analyse profitability in Aibidia OTPM'
+  url: https://www.aibidia.com/product-news/multi-level-profit-monitoring-a-new-way-to-analyse-profitability-in-aibidia-otpm
+  breaking: unknown
+  api_affecting: false
+  note: >-
+    Closest entry to the public API surface — the Public OTP Management API's only write operation is titled
+    "Automated data injection (Multi-Level Segmentation)". The post announces the feature, not the contract.
+- title: 'Product spotlight: German Transaction Matrix (GTM) in Aibidia TPDoc'
+  url: https://www.aibidia.com/product-news/product-spotlight-german-transaction-matrix-gtm-in-aibidia-tpdoc
+  breaking: unknown
+  api_affecting: false
+- title: 'TP Aurora: trusted transfer pricing research in minutes'
+  url: https://www.aibidia.com/product-news/tp-aurora-trusted-transfer-pricing-research-in-minutes
+  breaking: unknown
+  api_affecting: false
+gaps:
+- No dated, machine-readable changelog for any published API contract.
+- No version history for the Public OTP Management API.
+- The provider's own release notes are public but client-rendered and therefore unreadable to a machine.

@@ -1,0 +1,94 @@
+generated: '2026-09-13'
+method: derived
+source: >-
+  openapi/aibidia-otp-management-public-openapi.yml (4xx/5xx responses and the ProblemDetails schema) and
+  openapi/aibidia-tp-ai-openapi.yml (HTTPValidationError).
+format: rfc7807
+media_type_declared: application/json, text/json, text/plain
+note: >-
+  Aibidia's public OTP Management API returns ASP.NET Core ProblemDetails on every documented failure, which is
+  RFC 7807 in shape. It does NOT serve them under the application/problem+json media type, so the problem
+  envelope is not content-negotiable and a generic RFC 7807 client cannot detect it from headers alone. No
+  registered problem `type` URIs are published — the `type` member is declared nullable and no catalogue of
+  values exists anywhere Aibidia publishes — so the list below is keyed on HTTP status, which is the only
+  discriminator an integrator actually has.
+envelope:
+  schema: ProblemDetails
+  fields:
+  - name: type
+    required: true
+    nullable: true
+    note: A URI reference identifying the problem type. No values are published; expect null or the ASP.NET Core default RFC link.
+  - name: title
+    required: true
+    nullable: true
+  - name: status
+    required: true
+    nullable: true
+  - name: detail
+    required: true
+    nullable: true
+  - name: instance
+    required: true
+    nullable: true
+    note: The only per-request identifier this API exposes; there is no request-id header.
+  extensions: open (additionalProperties is unconstrained)
+problem_types:
+- status: 400
+  title: Bad Request
+  operations:
+  - POST /api/datainjections/automated
+  meaning: >-
+    The injection payload failed validation. Derived from the declared constraints: `pages` outside 1-2000,
+    `month` outside 1-13, more than 5000 items in `data`, a missing required item field (account,
+    accountDescription, legalEntity, taxJurisdiction, division, businessUnit, functionalArea, department,
+    profitCenter, costCenter, productLevel1-5, projectCode, groupValue, localValue, counterpartyLegalEntity), a
+    string over its maxLength, or an unknown property (every schema sets additionalProperties: false).
+  remediation: >-
+    Fix the payload and re-send. Because pages must arrive in consecutive order and the provider instructs a
+    restart from currentPage 0 on failure, a mid-upload 400 means restarting the whole period, not retrying the
+    one page.
+  retryable: false
+- status: 401
+  title: Unauthorized
+  operations:
+  - POST /api/datainjections/automated
+  - GET /api/extract-types/integration
+  meaning: The X-DATAINGESTION-API-KEY header is missing, malformed, or not a valid key.
+  remediation: Supply a valid X-DATAINGESTION-API-KEY header. Keys are issued by Aibidia per Extract Type; there is no public issuance endpoint.
+  retryable: false
+- status: 403
+  title: Forbidden
+  operations:
+  - POST /api/datainjections/automated
+  meaning: >-
+    The key authenticated but is not permitted to inject for this target. Because the key is bound to one Extract
+    Type, this is the expected response when the payload's year/month/Extract Type does not belong to the key's
+    scope.
+  remediation: Use the key issued for the Extract Type you are loading, or ask Aibidia to widen its scope.
+  retryable: false
+- status: 500
+  title: Internal Server Error
+  operations:
+  - POST /api/datainjections/automated
+  meaning: Server-side failure. Declared with no response body schema, so no ProblemDetails is guaranteed here.
+  remediation: >-
+    Retry with backoff. Note that the API declares no idempotency mechanism (see conventions/), so a retry after
+    an ambiguous 500 may duplicate a page; the provider's stated recovery is to restart the submission from
+    currentPage 0.
+  retryable: true
+- status: 422
+  title: Validation Error
+  operations:
+  - POST /api/create-session (Aibidia TP AI API)
+  meaning: FastAPI request-model validation failure — the HTTPValidationError/ValidationError shape, not ProblemDetails.
+  remediation: Correct the request body (create-session requires workspaceId as an integer).
+  retryable: false
+  note: >-
+    The TP AI service uses a different error envelope from the OTP Management API. An integrator touching both
+    cannot use one error parser.
+gaps:
+- No 429 response is declared on any operation despite a documented recommended request rate.
+- No problem `type` URI catalogue is published, so errors cannot be branched on programmatically beyond HTTP status.
+- 500 is declared with no body schema on the one write operation.
+- The two public services use two different error envelopes (ProblemDetails vs FastAPI HTTPValidationError).

@@ -1,0 +1,150 @@
+generated: '2026-09-13'
+method: derived
+source: openapi/aibidia-otp-management-public-openapi.yml components.schemas ($ref graph + enum vocabularies)
+note: >-
+  Derived entirely from the schemas of the two public OTP Management operations. This is the data model of
+  Aibidia's ERP-to-platform ingestion boundary, not of the wider transfer pricing platform — the platform's own
+  objects (legal entities, transactions, TP models, documentation years, CbCR tables) sit behind Azure AD B2C
+  and publish no schema anonymously.
+entities:
+- name: ExtractType
+  schema: ExtractTypeIntegrationDto
+  description: >-
+    The configuration template an integration loads against. An API key is bound to exactly one ExtractType, so
+    it is the effective tenancy boundary of this API — no ExtractType identifier is ever passed in a request.
+  identifier: id (int32)
+  fields:
+  - id
+  - name
+  - columnMappings
+  - extracts
+- name: ExtractTypeColumnMapping
+  schema: ExtractTypeIntegrationColumnMappingDto
+  description: >-
+    One column of the customer's source extract mapped onto an Aibidia canonical column. Carries the customer's
+    own header (originalName), the canonical target (extractTypeColumn), the display label, the declared column
+    type, a max length, whether it is always required, and a conditional-requirement list.
+  identifier: id (int32)
+  fields:
+  - id
+  - originalName
+  - extractTypeColumn
+  - labelName
+  - callbackColumnName
+  - columnType
+  - isAlwaysRequired
+  - defaultMaxLength
+  - requiredOnlyIfTheseColsAreNull
+  - displayName
+- name: Extract
+  schema: ExtractIntegrationDto
+  description: >-
+    One period's uploaded data set for an ExtractType — a reporting year plus a month. Carries two independent
+    state machines: uploadState (did the bytes land) and validationStatus (did the platform accept them).
+  identifier: id (int32)
+  fields:
+  - id
+  - name
+  - reportingYear
+  - month
+  - uploadState
+  - validationStatus
+- name: MultiLevelSegmentationInjection
+  schema: InputAutomatedMultiLevelSegmentationInjectionDto
+  description: >-
+    The write envelope. One page of a paged upload for a (year, month) period. Not a persisted object — it is
+    consumed and produces an Extract, whose id is returned as AutomatedDataInjectionResponse.extractId.
+  fields:
+  - pages
+  - currentPage
+  - data
+  - year
+  - month
+- name: SegmentationRow
+  schema: InputAutomatedMultiLevelSegmentationInjectionItemDto
+  description: >-
+    A single general-ledger line, segmented along the dimensions transfer pricing needs: the account, the legal
+    entity and its counterparty legal entity, the tax jurisdiction, group and local currency values, and the
+    organisational and product hierarchy the profit is to be split along.
+  fields:
+  - account
+  - accountDescription
+  - legalEntity
+  - counterpartyLegalEntity
+  - groupValue
+  - localValue
+  - taxJurisdiction
+  - division
+  - businessUnit
+  - functionalArea
+  - department
+  - profitCenter
+  - costCenter
+  - productLevel1
+  - productLevel2
+  - productLevel3
+  - productLevel4
+  - productLevel5
+  - projectCode
+relationships:
+- from: ExtractType
+  to: ExtractTypeColumnMapping
+  kind: has_many
+  via: columnMappings
+- from: ExtractType
+  to: Extract
+  kind: has_many
+  via: extracts
+- from: MultiLevelSegmentationInjection
+  to: SegmentationRow
+  kind: has_many
+  via: data
+  constraint: max 5000 items per page
+- from: MultiLevelSegmentationInjection
+  to: Extract
+  kind: produces
+  via: AutomatedDataInjectionResponse.extractId
+- from: Extract
+  to: ExtractType
+  kind: belongs_to
+  via: API key binding (implicit — the ExtractType is never named in a request)
+- from: SegmentationRow
+  to: SegmentationRow
+  kind: references
+  via: legalEntity -> counterpartyLegalEntity (intercompany pairing, both free-text codes, max 50 chars)
+identifiers:
+  style: opaque int32 surrogate keys (id, extractId) — no prefixed or typed ids
+  customer_keys: >-
+    legalEntity and counterpartyLegalEntity are the customer's own entity codes (free strings, maxLength 50), not
+    Aibidia identifiers. There is no published legal-entity lookup on the public surface, so an integrator cannot
+    verify a code before sending it.
+vocabularies:
+- name: ExtractTypeColumn
+  kind: enum
+  count: 48
+  description: >-
+    Aibidia's canonical column vocabulary for transfer pricing source data — the closest thing in this contract
+    to a domain data model. Spans ledger keys (AccountId, AccountDescription, CompanyId, CounterpartyId),
+    valuation (GroupValue, LocalValue, DocumentCurrency, NetValueBillingDocument, NetValueBillingItem,
+    UnitPrice, Quantity, UnitOfMeasure), organisational hierarchy (Division, BusinessUnit, FunctionalArea,
+    Department, ProfitCenter, CostCenter, ProductLevel1-5, ProjectCode), SAP-shaped billing fields
+    (BillingDocument, BillingType, BillingDate, BillingItem, SoldToParty, SoldToPartyName, MaterialCode,
+    MaterialDescription, Incoterms, DestinationCountry, ContractNumber), and transfer-pricing-specific fields
+    (TaxJurisdiction, TpRequestNumber, FobPrice, TpInSellCurrency, SapTpPrice, TpBaseCost, MarkupPercentage,
+    MarkupAmount, TransferPriceMethod, OtherCosts, TotalTpCost, Period, Description).
+- name: Month
+  kind: enum
+  values: 1-13
+  note: 13 is a period value, not a calendar month — the adjustment/closing period an ERP posts after month 12.
+- name: ExtractUploadState
+  kind: enum
+  values: [Created, Initiated, Completed, Failed]
+- name: ExtractValidationCalculationStatus
+  kind: enum
+  values: [Created, Pending, Processing, Completed, Failed]
+domain_standards_observed:
+  note: >-
+    The vocabulary is shaped by SAP ERP billing structures (SoldToParty, BillingDocument/BillingItem, Incoterms,
+    MaterialCode) and by OECD transfer pricing concepts (transfer price method, markup, tax jurisdiction,
+    intercompany counterparty). It does not declare conformance to any published data standard — no SAF-T, no
+    XBRL, no OECD CbCR XML schema, no ISO 20022 message type. See conformance/.

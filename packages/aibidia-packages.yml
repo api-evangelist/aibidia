@@ -1,0 +1,33 @@
+generated: '2026-09-13'
+method: searched
+source: >-
+  Registry metadata queries against registry.npmjs.org (search), pypi.org/simple/aibidia/,
+  azuresearch-usnc.nuget.org (NuGet query), and the GitHub API for the Aibidia organization
+  (https://api.github.com/users/Aibidia/repos).
+package_count: 0
+official_sdk_count: 0
+note: >-
+  Aibidia ships no client libraries. npm search for "aibidia" returns 0 packages; pypi.org/simple/aibidia/ is 404;
+  the NuGet query API returns 0 hits (notable, since the platform is an ASP.NET Core estate and a first-party
+  .NET client would be the natural shape); Maven Central, RubyGems, crates.io and pkg.go.dev surface nothing
+  first-party. The GitHub organization https://github.com/Aibidia exists (created 2023-08-04, blog
+  https://aibidia.com, description "Aibidia is a ground-breaking platform that is revolutionising transfer
+  pricing for multinational enterprises and advisors") but publishes ZERO public repositories, so there is no
+  source distribution either.
+  The four repositories GitHub search returns for the term "aibidia" are all third-party — personal accounts and
+  a technical-test repo (RGraDev/tech_test_aibidia) — and none is first-party, so none is listed here.
+  An integrator calling the Public OTP Management API writes their own HTTP client against the two operations.
+packages: []
+registries_checked:
+- registry: npm
+  endpoint: https://registry.npmjs.org/-/v1/search?text=aibidia
+  result: 0 packages
+- registry: pypi
+  endpoint: https://pypi.org/simple/aibidia/
+  result: HTTP 404
+- registry: nuget
+  endpoint: https://azuresearch-usnc.nuget.org/query?q=aibidia
+  result: 0 hits
+- registry: github
+  endpoint: https://api.github.com/users/Aibidia/repos
+  result: 0 public repositories

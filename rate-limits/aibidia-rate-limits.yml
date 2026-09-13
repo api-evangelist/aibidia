@@ -1,0 +1,51 @@
+generated: '2026-09-13'
+method: searched
+source: >-
+  https://otpm-api.aibidia.com/swagger/public/swagger.json — the operation description Aibidia itself wrote into
+  POST /api/datainjections/automated, plus the declared schema constraints on the request body.
+docs: https://otpm-api.aibidia.com/swagger/index.html
+limit_count: 1
+note: >-
+  Aibidia publishes exactly one rate figure, and it is a RECOMMENDATION rather than an enforced limit: "Rate
+  Limit: Recommended 1 request per second." No 429 response is declared on any operation, no rate-limit response
+  headers are declared, and no Retry-After is mentioned. An agent therefore has a number to obey but no runtime
+  signal to react to — it cannot tell whether it is near a limit, over one, or whether one is enforced at all.
+  The hard caps below ARE enforced, but they are volume caps expressed as schema constraints, not rate limits.
+limits:
+- scope: per-api-key
+  applies_to: POST /api/datainjections/automated
+  window: 1s
+  limit: 1
+  burst: null
+  enforced: unknown
+  kind: recommended
+  evidence: 'Operation description: "**Rate Limit**: Recommended 1 request per second."'
+volume_constraints:
+- name: max items per page
+  value: 5000
+  field: data
+  evidence: 'InputAutomatedMultiLevelSegmentationInjectionDto.data.maxItems = 5000; description: "**Page Size**: Max 5000 items per page."'
+- name: max pages per submission
+  value: 2000
+  field: pages
+  evidence: 'InputAutomatedMultiLevelSegmentationInjectionDto.pages maximum = 2000; description: "**Total Pages**: Max 2000 pages."'
+- name: effective max rows per period
+  value: 10000000
+  derivation: 5000 items x 2000 pages
+- name: ordering constraint
+  value: pages must be sent in consecutive order
+  evidence: 'Operation description: "**Consecutive Order**: Pages must be sent in consecutive order."'
+- name: failure recovery
+  value: restart from currentPage 0
+  evidence: 'Operation description: "**Failure Recovery**: If a request fails, restart from `currentPage: 0`."'
+  note: >-
+    At the recommended 1 request/second and the maximum 2000 pages, a full-size submission takes ~33 minutes,
+    and any failure inside that window costs the whole upload. This is the single most consequential operational
+    fact on Aibidia's public surface.
+response_headers:
+  observed: []
+  documented: []
+  note: >-
+    None declared in the OpenAPI and none observable anonymously — both operations require an
+    X-DATAINGESTION-API-KEY and return 401 without one, so a live unauthenticated probe cannot reveal headers.
+status_on_exhaustion: null

@@ -1,0 +1,39 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Aibidia TP AI API
+  version: 1.0.0
+extends: ../openapi/aibidia-tp-ai-openapi.yml
+x-generated: '2026-09-13'
+x-method: generated
+x-source: >-
+  Enhancements derived from the verbatim document Aibidia serves at https://tpai-api.aibidia.com/openapi.json,
+  preserved unmodified at openapi/_original/aibidia-tpai-openapi.json. The served document carries the FastAPI
+  framework's default info.title ("FastAPI") and no servers[] block; both are corrected here from Aibidia's own
+  published runtime configuration at https://platform.aibidia.com/tpai/env.js, which names
+  https://tpai-api.aibidia.com/api/ as the TP AI solution API.
+actions:
+- target: $.info
+  description: Replace the framework-default title and record where the identification came from.
+  update:
+    title: Aibidia TP AI API
+    description: >-
+      Session service for the Aibidia TP AI solution at https://platform.aibidia.com/tpai/. Creates hosted
+      assistant sessions scoped to a workspace.
+    x-apis-io-source: https://tpai-api.aibidia.com/openapi.json
+    x-apis-io-identified-by: https://platform.aibidia.com/tpai/env.js
+    x-apis-io-fetched: '2026-09-13'
+- target: $.servers
+  description: >-
+    Add the production server. The served document declares no servers[]; this host is named by the provider's
+    own runtime configuration, not inferred from the fetch URL.
+  update:
+  - url: https://tpai-api.aibidia.com
+    description: Production
+- target: $.paths['/api/create-session'].post
+  description: Record that this operation requires an authenticated platform session.
+  update:
+    x-auth-required: true
+    x-auth-note: >-
+      Gated behind the Azure AD B2C platform session (MSAL scope
+      https://auth.aibidia.com/AibidiaAPI/user_impersonation). The served document declares no securitySchemes,
+      which is a gap in the published contract rather than evidence the endpoint is open.

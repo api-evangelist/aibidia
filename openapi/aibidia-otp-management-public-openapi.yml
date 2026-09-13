@@ -1,0 +1,497 @@
+openapi: 3.1.1
+info:
+  title: Public OTP Management API
+  version: public
+servers:
+- url: https://otpm-api.aibidia.com
+paths:
+  /api/datainjections/automated:
+    post:
+      tags:
+      - DataInjections
+      summary: Automated data injection (Multi-Level Segmentation)
+      description: 'Uploads data for a specific year, month, and Extract Type.
+
+
+        **Special Requirements:**
+
+        - **Consecutive Order**: Pages must be sent in consecutive order.
+
+        - **Page Size**: Max 5000 items per page.
+
+        - **Total Pages**: Max 2000 pages.
+
+        - **Rate Limit**: Recommended 1 request per second.
+
+        - **Failure Recovery**: If a request fails, restart from `currentPage: 0`.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionDto'
+          text/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionDto'
+          application/*+json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionDto'
+        required: true
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/AutomatedDataInjectionResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomatedDataInjectionResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AutomatedDataInjectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Forbidden
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Internal Server Error
+  /api/extract-types/integration:
+    get:
+      tags:
+      - ExtractTypes
+      summary: Get integration data for a specific Extract Type
+      description: Retrieves the configuration and current status of extracts for the Extract Type associated with
+        the provided API key.
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+components:
+  schemas:
+    AutomatedDataInjectionResponse:
+      required:
+      - extractId
+      type: object
+      properties:
+        extractId:
+          type: integer
+          format: int32
+      additionalProperties: false
+    ExtractIntegrationDto:
+      required:
+      - id
+      - month
+      - name
+      - reportingYear
+      - uploadState
+      - validationStatus
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        reportingYear:
+          type: string
+        month:
+          allOf:
+          - $ref: '#/components/schemas/Month'
+        uploadState:
+          allOf:
+          - $ref: '#/components/schemas/ExtractUploadState'
+        validationStatus:
+          allOf:
+          - $ref: '#/components/schemas/ExtractValidationCalculationStatus'
+      additionalProperties: false
+    ExtractTypeColumn:
+      enum:
+      - AccountId
+      - AccountDescription
+      - CompanyId
+      - CounterpartyId
+      - GroupValue
+      - LocalValue
+      - TaxJurisdiction
+      - Division
+      - BusinessUnit
+      - FunctionalArea
+      - Department
+      - ProfitCenter
+      - CostCenter
+      - ProductLevel1
+      - ProductLevel2
+      - ProductLevel3
+      - ProductLevel4
+      - ProductLevel5
+      - ProjectCode
+      - BillingDocument
+      - BillingType
+      - DocumentCurrency
+      - TpRequestNumber
+      - ContractNumber
+      - BillingDate
+      - Incoterms
+      - NetValueBillingDocument
+      - SoldToParty
+      - SoldToPartyName
+      - DestinationCountry
+      - BillingItem
+      - NetValueBillingItem
+      - MaterialCode
+      - MaterialDescription
+      - Description
+      - FobPrice
+      - TpInSellCurrency
+      - SapTpPrice
+      - TpBaseCost
+      - MarkupPercentage
+      - MarkupAmount
+      - TransferPriceMethod
+      - OtherCosts
+      - TotalTpCost
+      - Period
+      - Quantity
+      - UnitOfMeasure
+      - UnitPrice
+      type: string
+    ExtractTypeIntegrationColumnMappingDto:
+      required:
+      - callbackColumnName
+      - columnType
+      - defaultMaxLength
+      - displayName
+      - extractTypeColumn
+      - id
+      - isAlwaysRequired
+      - labelName
+      - originalName
+      - requiredOnlyIfTheseColsAreNull
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        originalName:
+          type: string
+        extractTypeColumn:
+          allOf:
+          - $ref: '#/components/schemas/ExtractTypeColumn'
+        labelName:
+          type:
+          - 'null'
+          - string
+        callbackColumnName:
+          type: string
+        columnType:
+          type: string
+        isAlwaysRequired:
+          type: boolean
+        defaultMaxLength:
+          type: integer
+          format: int32
+        requiredOnlyIfTheseColsAreNull:
+          type:
+          - 'null'
+          - array
+          items:
+            type: string
+        displayName:
+          type: string
+      additionalProperties: false
+    ExtractTypeIntegrationDto:
+      required:
+      - columnMappings
+      - extracts
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        columnMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractTypeIntegrationColumnMappingDto'
+        extracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractIntegrationDto'
+      additionalProperties: false
+    ExtractUploadState:
+      enum:
+      - Created
+      - Initiated
+      - Completed
+      - Failed
+      type: string
+    ExtractValidationCalculationStatus:
+      enum:
+      - Created
+      - Pending
+      - Processing
+      - Completed
+      - Failed
+      type: string
+    InputAutomatedMultiLevelSegmentationInjectionDto:
+      required:
+      - currentPage
+      - data
+      - month
+      - pages
+      - year
+      type: object
+      properties:
+        pages:
+          maximum: 2000
+          minimum: 1
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+        data:
+          maxItems: 5000
+          type: array
+          items:
+            $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionItemDto'
+        year:
+          type: integer
+          format: int32
+        month:
+          maximum: 13
+          minimum: 1
+          type: integer
+          format: int32
+      additionalProperties: false
+    InputAutomatedMultiLevelSegmentationInjectionItemDto:
+      required:
+      - account
+      - accountDescription
+      - businessUnit
+      - costCenter
+      - counterpartyLegalEntity
+      - department
+      - division
+      - functionalArea
+      - groupValue
+      - legalEntity
+      - localValue
+      - productLevel1
+      - productLevel2
+      - productLevel3
+      - productLevel4
+      - productLevel5
+      - profitCenter
+      - projectCode
+      - taxJurisdiction
+      type: object
+      properties:
+        account:
+          maxLength: 255
+          minLength: 1
+          type: string
+        accountDescription:
+          maxLength: 1000
+          type: string
+        legalEntity:
+          maxLength: 50
+          minLength: 1
+          type: string
+        counterpartyLegalEntity:
+          maxLength: 50
+          type:
+          - 'null'
+          - string
+        groupValue:
+          type:
+          - 'null'
+          - number
+          format: double
+        localValue:
+          type:
+          - 'null'
+          - number
+          format: double
+        taxJurisdiction:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        division:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        businessUnit:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        functionalArea:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        department:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        profitCenter:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        costCenter:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        productLevel1:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        productLevel2:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        productLevel3:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        productLevel4:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        productLevel5:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+        projectCode:
+          maxLength: 255
+          type:
+          - 'null'
+          - string
+      additionalProperties: false
+    Month:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      type: integer
+      format: int32
+    ProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      - type
+      type: object
+      properties:
+        type:
+          type:
+          - 'null'
+          - string
+        title:
+          type:
+          - 'null'
+          - string
+        status:
+          type:
+          - 'null'
+          - integer
+          format: int32
+        detail:
+          type:
+          - 'null'
+          - string
+        instance:
+          type:
+          - 'null'
+          - string
+      additionalProperties: {}
+  securitySchemes:
+    X-DATAINGESTION-API-KEY:
+      type: apiKey
+      description: API Key authentication using the X-DATAINGESTION-API-KEY header.
+      name: X-DATAINGESTION-API-KEY
+      in: header
+tags:
+- name: DataInjections
+- name: ExtractTypes
