@@ -44,30 +44,16 @@ tags_raw:
 - data-ingestion
 - finland
 apis:
-- name: Aibidia Public OTP Management API
-  image: https://cdn.prod.website-files.com/652d101c1d03208622e683de/65686f3212a45fa956dd35a9_Social%20Share%20Aibidia.png
-  description: >-
-    The deliberately-public integration surface of Aibidia's OTP Management solution. It accepts automated
-    multi-level segmentation data injections for a given year, month and Extract Type, and returns the
-    configuration and current upload status of the extracts bound to the calling API key. Authentication is an
-    X-DATAINGESTION-API-KEY request header issued per Extract Type; errors are returned as RFC 7807
-    ProblemDetails. The published document is served by the provider at
-    https://otpm-api.aibidia.com/swagger/public/swagger.json and is titled "Public OTP Management API".
+- aid: aibidia:aibidia-aibidia-tp-ai-api-api
+  name: Aibidia Aibidia TP AI API
+  description: The Aibidia TP AI API API from Aibidia — 1 operation(s) for aibidia tp ai api.
   humanURL: https://otpm-api.aibidia.com/swagger/index.html
   baseURL: https://otpm-api.aibidia.com
   tags:
-  - Transfer Pricing
-  - Data Ingestion
-  - Tax Technology
-  - Financial Data
-  tags_raw:
-  - transfer-pricing
-  - data-ingestion
-  - tax-technology
-  - financial-data
+  - Aibidia TP AI API
   properties:
   - type: OpenAPI
-    url: openapi/aibidia-otp-management-public-openapi.yml
+    url: openapi/aibidia-aibidia-tp-ai-api-api-openapi.yml
   - type: APIReference
     url: https://otpm-api.aibidia.com/swagger/index.html
   - type: Authentication
@@ -78,37 +64,123 @@ apis:
     url: errors/aibidia-problem-types.yml
   - type: DataModel
     url: data-model/aibidia-data-model.yml
-  - type: Overlay
-    url: overlays/aibidia-otp-management-public-overlay.yaml
   - type: RateLimits
     url: rate-limits/aibidia-rate-limits.yml
-  - type: AgentSkill
-    url: skills/_index.yml
-- name: Aibidia TP AI API
-  image: https://cdn.prod.website-files.com/652d101c1d03208622e683de/65686f3212a45fa956dd35a9_Social%20Share%20Aibidia.png
-  description: >-
-    Backend service for the Aibidia TP AI solution surfaced at platform.aibidia.com/tpai/. It serves an OpenAPI
-    3.1.0 document anonymously at https://tpai-api.aibidia.com/openapi.json describing a healthcheck, an
-    authorization call and a chat-session creation call that takes a workspaceId and returns a hosted assistant
-    session. The served document carries the FastAPI framework's default info.title; the service is identified as
-    Aibidia's TP AI API by the provider's own published runtime configuration at
-    https://platform.aibidia.com/tpai/env.js.
-  humanURL: https://www.aibidia.com/platform
-  baseURL: https://tpai-api.aibidia.com
+- aid: aibidia:aibidia-authorize-api
+  name: Aibidia Authorize API
+  description: The Authorize API from Aibidia — 1 operation(s) for authorize.
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
   tags:
-  - Transfer Pricing
-  - Artificial Intelligence
-  - Tax Technology
-  tags_raw:
-  - transfer-pricing
-  - artificial-intelligence
-  - tax-technology
+  - Authorize
   properties:
   - type: OpenAPI
-    url: openapi/aibidia-tp-ai-openapi.yml
-  - type: Overlay
-    url: overlays/aibidia-tp-ai-overlay.yaml
+    url: openapi/aibidia-authorize-api-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
+- aid: aibidia:aibidia-create-session-api
+  name: Aibidia Create Session API
+  description: The Create Session API from Aibidia — 1 operation(s) for create session.
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
+  tags:
+  - Create Session
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-create-session-api-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
+- aid: aibidia:aibidia-datainjections-api
+  name: Aibidia Data Injections API
+  description: The DataInjections API from Aibidia — 1 operation(s) for datainjections.
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
+  tags:
+  - DataInjections
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-datainjections-api-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
+- aid: aibidia:aibidia-extracttypes-api
+  name: Aibidia Extract Types API
+  description: The ExtractTypes API from Aibidia — 1 operation(s) for extracttypes.
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
+  tags:
+  - ExtractTypes
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-extracttypes-api-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
+- aid: aibidia:aibidia-health-api
+  name: Aibidia Health API
+  description: The Health API from Aibidia — 1 operation(s) for health.
+  humanURL: https://otpm-api.aibidia.com/swagger/index.html
+  baseURL: https://otpm-api.aibidia.com
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/aibidia-health-api-openapi.yml
+  - type: APIReference
+    url: https://otpm-api.aibidia.com/swagger/index.html
+  - type: Authentication
+    url: authentication/aibidia-authentication.yml
+  - type: Conventions
+    url: conventions/aibidia-conventions.yml
+  - type: ErrorCatalog
+    url: errors/aibidia-problem-types.yml
+  - type: DataModel
+    url: data-model/aibidia-data-model.yml
+  - type: RateLimits
+    url: rate-limits/aibidia-rate-limits.yml
 common:
+- type: Overlay
+  url: overlays/aibidia-otp-management-public-overlay.yaml
+- type: Overlay
+  url: overlays/aibidia-tp-ai-overlay.yaml
 - type: Website
   url: https://www.aibidia.com/
 - type: Documentation
