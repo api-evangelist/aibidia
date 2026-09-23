@@ -1,0 +1,23 @@
+openapi: 3.2.0
+info:
+  title: Aibidia TP AI API
+  version: 0.1.0
+  description: Backend service for the Aibidia TP AI solution (platform.aibidia.com/tpai/). Title in the served document is the FastAPI framework default; the service is identified as the TP AI solution API by Aibidia's own published runtime configuration at https://platform.aibidia.com/tpai/env.js (api.tpai).
+servers:
+- url: https://tpai-api.aibidia.com
+  description: Production
+tags:
+- name: Aibidia TP AI API
+paths:
+  /:
+    get:
+      summary: App Root
+      operationId: app_root__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Aibidia TP AI API

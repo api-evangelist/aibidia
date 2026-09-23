@@ -1,0 +1,257 @@
+openapi: 3.2.0
+info:
+  title: Public OTP Management Extract Types API
+  version: public
+servers:
+- url: https://otpm-api.aibidia.com
+tags:
+- name: ExtractTypes
+paths:
+  /api/extract-types/integration:
+    get:
+      tags:
+      - ExtractTypes
+      summary: Get integration data for a specific Extract Type
+      description: Retrieves the configuration and current status of extracts for the Extract Type associated with the provided API key.
+      responses:
+        '401':
+          description: Unauthorized
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ExtractTypeIntegrationDto'
+      operationId: getApiExtractTypesIntegration
+      x-operation-id-source: derived
+components:
+  schemas:
+    ExtractTypeColumn:
+      enum:
+      - AccountId
+      - AccountDescription
+      - CompanyId
+      - CounterpartyId
+      - GroupValue
+      - LocalValue
+      - TaxJurisdiction
+      - Division
+      - BusinessUnit
+      - FunctionalArea
+      - Department
+      - ProfitCenter
+      - CostCenter
+      - ProductLevel1
+      - ProductLevel2
+      - ProductLevel3
+      - ProductLevel4
+      - ProductLevel5
+      - ProjectCode
+      - BillingDocument
+      - BillingType
+      - DocumentCurrency
+      - TpRequestNumber
+      - ContractNumber
+      - BillingDate
+      - Incoterms
+      - NetValueBillingDocument
+      - SoldToParty
+      - SoldToPartyName
+      - DestinationCountry
+      - BillingItem
+      - NetValueBillingItem
+      - MaterialCode
+      - MaterialDescription
+      - Description
+      - FobPrice
+      - TpInSellCurrency
+      - SapTpPrice
+      - TpBaseCost
+      - MarkupPercentage
+      - MarkupAmount
+      - TransferPriceMethod
+      - OtherCosts
+      - TotalTpCost
+      - Period
+      - Quantity
+      - UnitOfMeasure
+      - UnitPrice
+      type: string
+    ExtractTypeIntegrationDto:
+      required:
+      - columnMappings
+      - extracts
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        columnMappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractTypeIntegrationColumnMappingDto'
+        extracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExtractIntegrationDto'
+      additionalProperties: false
+    ExtractUploadState:
+      enum:
+      - Created
+      - Initiated
+      - Completed
+      - Failed
+      type: string
+    ExtractValidationCalculationStatus:
+      enum:
+      - Created
+      - Pending
+      - Processing
+      - Completed
+      - Failed
+      type: string
+    Month:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      type: integer
+      format: int32
+    ExtractIntegrationDto:
+      required:
+      - id
+      - month
+      - name
+      - reportingYear
+      - uploadState
+      - validationStatus
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        reportingYear:
+          type: string
+        month:
+          allOf:
+          - $ref: '#/components/schemas/Month'
+        uploadState:
+          allOf:
+          - $ref: '#/components/schemas/ExtractUploadState'
+        validationStatus:
+          allOf:
+          - $ref: '#/components/schemas/ExtractValidationCalculationStatus'
+      additionalProperties: false
+    ProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      - type
+      type: object
+      properties:
+        type:
+          type:
+          - 'null'
+          - string
+        title:
+          type:
+          - 'null'
+          - string
+        status:
+          type:
+          - 'null'
+          - integer
+          format: int32
+        detail:
+          type:
+          - 'null'
+          - string
+        instance:
+          type:
+          - 'null'
+          - string
+      additionalProperties: {}
+    ExtractTypeIntegrationColumnMappingDto:
+      required:
+      - callbackColumnName
+      - columnType
+      - defaultMaxLength
+      - displayName
+      - extractTypeColumn
+      - id
+      - isAlwaysRequired
+      - labelName
+      - originalName
+      - requiredOnlyIfTheseColsAreNull
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        originalName:
+          type: string
+        extractTypeColumn:
+          allOf:
+          - $ref: '#/components/schemas/ExtractTypeColumn'
+        labelName:
+          type:
+          - 'null'
+          - string
+        callbackColumnName:
+          type: string
+        columnType:
+          type: string
+        isAlwaysRequired:
+          type: boolean
+        defaultMaxLength:
+          type: integer
+          format: int32
+        requiredOnlyIfTheseColsAreNull:
+          type:
+          - 'null'
+          - array
+          items:
+            type: string
+        displayName:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    X-DATAINGESTION-API-KEY:
+      type: apiKey
+      description: API Key authentication using the X-DATAINGESTION-API-KEY header.
+      name: X-DATAINGESTION-API-KEY
+      in: header

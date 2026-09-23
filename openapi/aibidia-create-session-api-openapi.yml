@@ -1,0 +1,85 @@
+openapi: 3.2.0
+info:
+  title: Aibidia TP AI Create Session API
+  version: 0.1.0
+  description: Backend service for the Aibidia TP AI solution (platform.aibidia.com/tpai/). Title in the served document is the FastAPI framework default; the service is identified as the TP AI solution API by Aibidia's own published runtime configuration at https://platform.aibidia.com/tpai/env.js (api.tpai).
+servers:
+- url: https://tpai-api.aibidia.com
+  description: Production
+tags:
+- name: Create Session
+paths:
+  /api/create-session:
+    post:
+      summary: Create Chatkit Session
+      operationId: create_chatkit_session_api_create_session_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionModel'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      tags:
+      - Create Session
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CreateSessionModel:
+      properties:
+        workspaceId:
+          type: integer
+          title: Workspaceid
+        workflowId:
+          type: string
+          title: Workflowid
+      type: object
+      required:
+      - workspaceId
+      - workflowId
+      title: CreateSessionModel
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

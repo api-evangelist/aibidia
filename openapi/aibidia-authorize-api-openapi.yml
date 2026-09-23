@@ -1,0 +1,23 @@
+openapi: 3.2.0
+info:
+  title: Aibidia TP AI Authorize API
+  version: 0.1.0
+  description: Backend service for the Aibidia TP AI solution (platform.aibidia.com/tpai/). Title in the served document is the FastAPI framework default; the service is identified as the TP AI solution API by Aibidia's own published runtime configuration at https://platform.aibidia.com/tpai/env.js (api.tpai).
+servers:
+- url: https://tpai-api.aibidia.com
+  description: Production
+tags:
+- name: Authorize
+paths:
+  /api/authorize:
+    post:
+      summary: Authorize
+      operationId: authorize_api_authorize_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+      tags:
+      - Authorize
