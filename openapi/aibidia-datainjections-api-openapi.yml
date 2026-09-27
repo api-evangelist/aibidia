@@ -96,77 +96,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    AutomatedDataInjectionResponse:
-      required:
-      - extractId
-      type: object
-      properties:
-        extractId:
-          type: integer
-          format: int32
-      additionalProperties: false
-    ProblemDetails:
-      required:
-      - detail
-      - instance
-      - status
-      - title
-      - type
-      type: object
-      properties:
-        type:
-          type:
-          - 'null'
-          - string
-        title:
-          type:
-          - 'null'
-          - string
-        status:
-          type:
-          - 'null'
-          - integer
-          format: int32
-        detail:
-          type:
-          - 'null'
-          - string
-        instance:
-          type:
-          - 'null'
-          - string
-      additionalProperties: {}
-    InputAutomatedMultiLevelSegmentationInjectionDto:
-      required:
-      - currentPage
-      - data
-      - month
-      - pages
-      - year
-      type: object
-      properties:
-        pages:
-          maximum: 2000
-          minimum: 1
-          type: integer
-          format: int32
-        currentPage:
-          type: integer
-          format: int32
-        data:
-          maxItems: 5000
-          type: array
-          items:
-            $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionItemDto'
-        year:
-          type: integer
-          format: int32
-        month:
-          maximum: 13
-          minimum: 1
-          type: integer
-          format: int32
-      additionalProperties: false
     InputAutomatedMultiLevelSegmentationInjectionItemDto:
       required:
       - account
@@ -281,6 +210,77 @@ components:
           type:
           - 'null'
           - string
+      additionalProperties: false
+    InputAutomatedMultiLevelSegmentationInjectionDto:
+      required:
+      - currentPage
+      - data
+      - month
+      - pages
+      - year
+      type: object
+      properties:
+        pages:
+          maximum: 2000
+          minimum: 1
+          type: integer
+          format: int32
+        currentPage:
+          type: integer
+          format: int32
+        data:
+          maxItems: 5000
+          type: array
+          items:
+            $ref: '#/components/schemas/InputAutomatedMultiLevelSegmentationInjectionItemDto'
+        year:
+          type: integer
+          format: int32
+        month:
+          maximum: 13
+          minimum: 1
+          type: integer
+          format: int32
+      additionalProperties: false
+    ProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      - type
+      type: object
+      properties:
+        type:
+          type:
+          - 'null'
+          - string
+        title:
+          type:
+          - 'null'
+          - string
+        status:
+          type:
+          - 'null'
+          - integer
+          format: int32
+        detail:
+          type:
+          - 'null'
+          - string
+        instance:
+          type:
+          - 'null'
+          - string
+      additionalProperties: {}
+    AutomatedDataInjectionResponse:
+      required:
+      - extractId
+      type: object
+      properties:
+        extractId:
+          type: integer
+          format: int32
       additionalProperties: false
   securitySchemes:
     X-DATAINGESTION-API-KEY:
