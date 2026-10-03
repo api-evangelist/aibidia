@@ -35,19 +35,6 @@ paths:
       - Create Session
 components:
   schemas:
-    CreateSessionModel:
-      properties:
-        workspaceId:
-          type: integer
-          title: Workspaceid
-        workflowId:
-          type: string
-          title: Workflowid
-      type: object
-      required:
-      - workspaceId
-      - workflowId
-      title: CreateSessionModel
     ValidationError:
       properties:
         loc:
@@ -74,6 +61,19 @@ components:
       - msg
       - type
       title: ValidationError
+    CreateSessionModel:
+      properties:
+        workspaceId:
+          type: integer
+          title: Workspaceid
+        workflowId:
+          type: string
+          title: Workflowid
+      type: object
+      required:
+      - workspaceId
+      - workflowId
+      title: CreateSessionModel
     HTTPValidationError:
       properties:
         detail:
