@@ -1,0 +1,26 @@
+slug: aibidia
+provider: Aibidia
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: DataInjections
+  spec_file: aibidia-datainjections-api-openapi.yml
+  capability_id: BC-220.30
+  capability_id_l1: BC-220
+  capability_name: Transfer Pricing Management
+  confidence: 0.72
+  evidence: POST /api/datainjections/automated  Automated data injection (Multi-Level Segmentation); InputAutomatedMultiLevelSegmentationInjectionDto
+  reason: Ingests segmented intercompany financial data into the vendor's Operational Transfer Pricing
+    (OTP) Management module, supporting transfer-pricing policy monitoring and documentation. Mapped to
+    Transfer Pricing Management; confidence tempered because the single operation is an ingestion endpoint
+    and the capability inference leans on the OTP module context.

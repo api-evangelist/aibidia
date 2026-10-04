@@ -177,6 +177,9 @@ apis:
   - type: RateLimits
     url: rate-limits/aibidia-rate-limits.yml
 common:
+- type: CapabilityMap
+  url: capabilities/aibidia-capability-edges.yml
+  name: Aibidia Business Capability Map
 - type: Overlay
   url: overlays/aibidia-otp-management-public-overlay.yaml
 - type: Overlay
