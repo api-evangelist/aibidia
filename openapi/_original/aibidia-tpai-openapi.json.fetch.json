@@ -1,0 +1,12 @@
+{
+ "url": "https://tpai-api.aibidia.com/openapi.json",
+ "requested_url": "https://tpai-api.aibidia.com/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 1925,
+ "sha256": "bd31d0ce305194a6893a5e537677e8cf956bb7436420389bb06d9e1c9f830e56",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
