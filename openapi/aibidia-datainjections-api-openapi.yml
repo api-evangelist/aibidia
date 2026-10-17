@@ -105,6 +105,37 @@ components:
           type: integer
           format: int32
       additionalProperties: false
+    ProblemDetails:
+      required:
+      - detail
+      - instance
+      - status
+      - title
+      - type
+      type: object
+      properties:
+        type:
+          type:
+          - 'null'
+          - string
+        title:
+          type:
+          - 'null'
+          - string
+        status:
+          type:
+          - 'null'
+          - integer
+          format: int32
+        detail:
+          type:
+          - 'null'
+          - string
+        instance:
+          type:
+          - 'null'
+          - string
+      additionalProperties: {}
     InputAutomatedMultiLevelSegmentationInjectionItemDto:
       required:
       - account
@@ -251,37 +282,6 @@ components:
           type: integer
           format: int32
       additionalProperties: false
-    ProblemDetails:
-      required:
-      - detail
-      - instance
-      - status
-      - title
-      - type
-      type: object
-      properties:
-        type:
-          type:
-          - 'null'
-          - string
-        title:
-          type:
-          - 'null'
-          - string
-        status:
-          type:
-          - 'null'
-          - integer
-          format: int32
-        detail:
-          type:
-          - 'null'
-          - string
-        instance:
-          type:
-          - 'null'
-          - string
-      additionalProperties: {}
   securitySchemes:
     X-DATAINGESTION-API-KEY:
       type: apiKey

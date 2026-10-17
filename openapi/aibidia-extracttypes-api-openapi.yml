@@ -42,11 +42,122 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ExtractValidationCalculationStatus:
+    ExtractTypeIntegrationColumnMappingDto:
+      required:
+      - callbackColumnName
+      - columnType
+      - defaultMaxLength
+      - displayName
+      - extractTypeColumn
+      - id
+      - isAlwaysRequired
+      - labelName
+      - originalName
+      - requiredOnlyIfTheseColsAreNull
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        originalName:
+          type: string
+        extractTypeColumn:
+          allOf:
+          - $ref: '#/components/schemas/ExtractTypeColumn'
+        labelName:
+          type:
+          - 'null'
+          - string
+        callbackColumnName:
+          type: string
+        columnType:
+          type: string
+        isAlwaysRequired:
+          type: boolean
+        defaultMaxLength:
+          type: integer
+          format: int32
+        requiredOnlyIfTheseColsAreNull:
+          type:
+          - 'null'
+          - array
+          items:
+            type: string
+        displayName:
+          type: string
+      additionalProperties: false
+    ExtractTypeColumn:
+      enum:
+      - AccountId
+      - AccountDescription
+      - CompanyId
+      - CounterpartyId
+      - GroupValue
+      - LocalValue
+      - TaxJurisdiction
+      - Division
+      - BusinessUnit
+      - FunctionalArea
+      - Department
+      - ProfitCenter
+      - CostCenter
+      - ProductLevel1
+      - ProductLevel2
+      - ProductLevel3
+      - ProductLevel4
+      - ProductLevel5
+      - ProjectCode
+      - BillingDocument
+      - BillingType
+      - DocumentCurrency
+      - TpRequestNumber
+      - ContractNumber
+      - BillingDate
+      - Incoterms
+      - NetValueBillingDocument
+      - SoldToParty
+      - SoldToPartyName
+      - DestinationCountry
+      - BillingItem
+      - NetValueBillingItem
+      - MaterialCode
+      - MaterialDescription
+      - Description
+      - FobPrice
+      - TpInSellCurrency
+      - SapTpPrice
+      - TpBaseCost
+      - MarkupPercentage
+      - MarkupAmount
+      - TransferPriceMethod
+      - OtherCosts
+      - TotalTpCost
+      - Period
+      - Quantity
+      - UnitOfMeasure
+      - UnitPrice
+      type: string
+    Month:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      type: integer
+      format: int32
+    ExtractUploadState:
       enum:
       - Created
-      - Pending
-      - Processing
+      - Initiated
       - Completed
       - Failed
       type: string
@@ -103,74 +214,6 @@ components:
           - 'null'
           - string
       additionalProperties: {}
-    Month:
-      enum:
-      - 1
-      - 2
-      - 3
-      - 4
-      - 5
-      - 6
-      - 7
-      - 8
-      - 9
-      - 10
-      - 11
-      - 12
-      - 13
-      type: integer
-      format: int32
-    ExtractTypeIntegrationColumnMappingDto:
-      required:
-      - callbackColumnName
-      - columnType
-      - defaultMaxLength
-      - displayName
-      - extractTypeColumn
-      - id
-      - isAlwaysRequired
-      - labelName
-      - originalName
-      - requiredOnlyIfTheseColsAreNull
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        originalName:
-          type: string
-        extractTypeColumn:
-          allOf:
-          - $ref: '#/components/schemas/ExtractTypeColumn'
-        labelName:
-          type:
-          - 'null'
-          - string
-        callbackColumnName:
-          type: string
-        columnType:
-          type: string
-        isAlwaysRequired:
-          type: boolean
-        defaultMaxLength:
-          type: integer
-          format: int32
-        requiredOnlyIfTheseColsAreNull:
-          type:
-          - 'null'
-          - array
-          items:
-            type: string
-        displayName:
-          type: string
-      additionalProperties: false
-    ExtractUploadState:
-      enum:
-      - Created
-      - Initiated
-      - Completed
-      - Failed
-      type: string
     ExtractIntegrationDto:
       required:
       - id
@@ -198,56 +241,13 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExtractValidationCalculationStatus'
       additionalProperties: false
-    ExtractTypeColumn:
+    ExtractValidationCalculationStatus:
       enum:
-      - AccountId
-      - AccountDescription
-      - CompanyId
-      - CounterpartyId
-      - GroupValue
-      - LocalValue
-      - TaxJurisdiction
-      - Division
-      - BusinessUnit
-      - FunctionalArea
-      - Department
-      - ProfitCenter
-      - CostCenter
-      - ProductLevel1
-      - ProductLevel2
-      - ProductLevel3
-      - ProductLevel4
-      - ProductLevel5
-      - ProjectCode
-      - BillingDocument
-      - BillingType
-      - DocumentCurrency
-      - TpRequestNumber
-      - ContractNumber
-      - BillingDate
-      - Incoterms
-      - NetValueBillingDocument
-      - SoldToParty
-      - SoldToPartyName
-      - DestinationCountry
-      - BillingItem
-      - NetValueBillingItem
-      - MaterialCode
-      - MaterialDescription
-      - Description
-      - FobPrice
-      - TpInSellCurrency
-      - SapTpPrice
-      - TpBaseCost
-      - MarkupPercentage
-      - MarkupAmount
-      - TransferPriceMethod
-      - OtherCosts
-      - TotalTpCost
-      - Period
-      - Quantity
-      - UnitOfMeasure
-      - UnitPrice
+      - Created
+      - Pending
+      - Processing
+      - Completed
+      - Failed
       type: string
   securitySchemes:
     X-DATAINGESTION-API-KEY:
