@@ -6,6 +6,9 @@ artifacts:
   authentication/aibidia-authentication.yml:
     method: searched
     evidence: declared in the artifact
+  capabilities/aibidia-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/aibidia-changelog.yml:
     method: searched
     evidence: declared in the artifact
@@ -24,7 +27,7 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-14T064754.yml:
@@ -93,6 +96,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/aibidia-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -116,12 +134,12 @@ artifacts:
       to the provider's source is unverified
   openapi/_original/aibidia-tp-ai-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: the same operations as https://tpai-api.aibidia.com/openapi.json (sha256 bd31d0ce3051, fetched
+      2026-10-04)
   openapi/_original/aibidia-tpai-openapi.json:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
+    evidence: byte-identical to https://tpai-api.aibidia.com/openapi.json (sha256 bd31d0ce3051, fetched
+      2026-10-04)
   openapi/aibidia-aibidia-tp-ai-api-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -141,11 +159,11 @@ artifacts:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   overlays/aibidia-otp-management-public-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   overlays/aibidia-tp-ai-overlay.yaml:
-    method: generated
-    evidence: declared in the artifact
+    method: derived
+    evidence: an API Evangelist overlay (title) over the provider's contract
   packages/aibidia-packages.yml:
     method: searched
     evidence: declared in the artifact
