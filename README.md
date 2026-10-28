@@ -64,30 +64,124 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Aibidia is a Helsinki-based transfer pricing technology company. Its cloud platform lets multinational
-enterprises manage transfer pricing policy, intercompany transaction data, documentation and country-by-country
-reporting across a set of solution modules — TPDoc, CbCR, OTP Management, Strategic TP Management, Value Chain
-Analysis, Data Studio, Horizon and TP AI — behind a single Azure AD B2C sign-in at platform.aibidia.com.
+Aibidia is a Helsinki-based transfer pricing technology company whose cloud platform lets multinational enterprises manage transfer pricing policy, intercompany transaction data, documentation and country-by-country reporting in one place. The platform is delivered as a set of solution modules — TPDoc (documentation), CbCR, OTP Management, Strategic TP Management, Value Chain Analysis, Data Studio, Horizon and TP AI — behind a single Azure AD B2C sign-in at platform.aibidia.com, each backed by its own first-party API service on an aibidia.com subdomain. Aibidia publishes a small deliberately-public integration surface: the Public OTP Management API, which accepts automated multi-level segmentation data injections from a customer's ERP or finance stack using an X-DATAINGESTION-API-KEY header. There is no open developer portal, no public API reference and no self-serve signup; the platform is sold to enterprise tax teams and the help centre and release notes sit behind client-rendered portals.
 
-**What this profile found (enrichment pass 2026-09-13).** Aibidia publishes no developer portal and no API
-reference, and its marketing site's full 149-URL sitemap contains nothing developer-facing. The machine-readable
-contracts were recovered from the provider's own published platform runtime configuration
-(`https://platform.aibidia.com/env.js` and the per-solution `env.js` files), which names every backend service
-host:
+**Areas:** Company · Transfer Pricing · Tax Technology · Tax Compliance · Regulatory Reporting · Country-by-Country Reporting · Financial Data · Enterprise Software · Data Ingestion · Finland
 
-- **Public OTP Management API** — `https://otpm-api.aibidia.com/swagger/public/swagger.json`, OpenAPI 3.1.1, a
-  deliberately-public two-operation ERP data-ingestion surface authenticated with an `X-DATAINGESTION-API-KEY`
-  header. This is a real integration API, not a leak: the Swagger UI declares exactly one document group and
-  names it "Public".
-- **Aibidia TP AI API** — `https://tpai-api.aibidia.com/openapi.json`, OpenAPI 3.1.0, the session service behind
-  the TP AI solution.
-- A third published document, the **Public Horizon API** at `https://hzn-api.aibidia.com/swagger/public/swagger.json`,
-  is real but declares zero operations. It is saved under `openapi/_original/` as evidence and deliberately not
-  registered as an API.
+## Aibidia on APIs.io
 
-No MCP server, no A2A agent card, no client SDKs in any registry, no public pricing, and no status page. Aibidia
-does publish an `llms.txt`, an OpenID Provider Metadata document on its own `auth.aibidia.com` custom domain, and
-ISO 27001 / SOC 2 Type 2 claims on its site. Every probe and its HTTP status is recorded in the artifacts.
+Everything profiled for Aibidia is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/aibidia/](https://apis.io/providers/aibidia/)** — or go straight to one of the APIs or properties below.
 
-- https://www.aibidia.com/
-- https://equityzen.com/company/aibidia
+### APIs (6)
+
+- [Aibidia Aibidia TP AI API](https://apis.io/apis/aibidia/aibidia-aibidia-tp-ai-api-api/) — The Aibidia TP AI API API from Aibidia — 1 operation(s) for aibidia tp ai api.
+- [Aibidia Authorize API](https://apis.io/apis/aibidia/aibidia-authorize-api/) — The Authorize API from Aibidia — 1 operation(s) for authorize.
+- [Aibidia Create Session API](https://apis.io/apis/aibidia/aibidia-create-session-api/) — The Create Session API from Aibidia — 1 operation(s) for create session.
+- [Aibidia Data Injections API](https://apis.io/apis/aibidia/aibidia-datainjections-api/) — The DataInjections API from Aibidia — 1 operation(s) for datainjections.
+- [Aibidia Extract Types API](https://apis.io/apis/aibidia/aibidia-extracttypes-api/) — The ExtractTypes API from Aibidia — 1 operation(s) for extracttypes.
+- [Aibidia Health API](https://apis.io/apis/aibidia/aibidia-health-api/) — The Health API from Aibidia — 1 operation(s) for health.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [aibidia-mcp.yml](https://apis.io/servers/aibidia/aibidia-mcp-yml/)
+
+#### Overlays (2)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Aibidia Otp Management Public Overlay](https://apis.io/overlays/aibidia/aibidia-otp-management-public-overlay/)
+- [Aibidia Tp Ai Overlay](https://apis.io/overlays/aibidia/aibidia-tp-ai-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Aibidia Authentication](https://apis.io/security/aibidia/aibidia-authentication/)
+- [Aibidia Domain Security](https://apis.io/security/aibidia/aibidia-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Aibidia Plans Pricing](https://apis.io/plans/aibidia/aibidia-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Aibidia Rate Limits](https://apis.io/rate-limits/aibidia/aibidia-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.aibidia.com/)
+- [Documentation](https://aibidia.my.site.com/help/support)
+- [API reference](https://otpm-api.aibidia.com/swagger/index.html)
+- [Support](https://aibidia.my.site.com/help/support)
+- [Changelog](https://www.aibidia.com/product-news)
+- [Blog](https://www.aibidia.com/blog)
+- [Terms of service](https://www.aibidia.com/terms-of-service)
+- [Privacy policy](https://www.aibidia.com/privacy-policy)
+- [GitHub](https://github.com/Aibidia)
+
+## API Evangelist rating
+
+**Kin Score 41.7** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 42.1 |
+| Contract governance | 18.2 |
+| Operational transparency | 39.5 |
+| Developer ergonomics | 37.5 |
+| Access clarity | 35.5 |
+
+**Agent readiness 28.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aibidia/](https://apis.io/providers/aibidia/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Aibidia: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/aibidia/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
