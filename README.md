@@ -91,12 +91,19 @@ Model Context Protocol servers that expose the API to agents.
 
 - [aibidia-mcp.yml](https://apis.io/servers/aibidia/aibidia-mcp-yml/)
 
-#### Overlays (2)
+#### Overlays (3)
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
+- [Aibidia Extracttypes Api Certification Overlay](https://apis.io/overlays/aibidia/aibidia-extracttypes-api-certification-overlay/)
 - [Aibidia Otp Management Public Overlay](https://apis.io/overlays/aibidia/aibidia-otp-management-public-overlay/)
 - [Aibidia Tp Ai Overlay](https://apis.io/overlays/aibidia/aibidia-tp-ai-overlay/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [Aibidia API Rules](https://apis.io/rules/aibidia/aibidia-rules/)
 
 #### Security (2)
 
@@ -117,6 +124,12 @@ Published request limits.
 
 - [Aibidia Rate Limits](https://apis.io/rate-limits/aibidia/aibidia-rate-limits/)
 
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Aibidia Finops](https://apis.io/finops/aibidia/aibidia-finops/)
+
 ## Where to find this API
 
 Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
@@ -133,18 +146,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 41.7** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 45.8** — developing · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 78.6 |
-| Contract quality | 42.1 |
-| Contract governance | 18.2 |
-| Operational transparency | 39.5 |
+| Contract quality | 45.3 |
+| Contract governance | 31.8 |
+| Operational transparency | 38.1 |
 | Developer ergonomics | 37.5 |
-| Access clarity | 35.5 |
+| Access clarity | 48.9 |
 
-**Agent readiness 28.6** — agent-ready
+**Agent readiness 28.0** — agent-aware
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -169,8 +182,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | na |
 | Operation Distinctiveness | na |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+**Regulatory alignment 23.5** — Horizontal (data, software, accessibility, platform)
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/aibidia/](https://apis.io/providers/aibidia/).
 
